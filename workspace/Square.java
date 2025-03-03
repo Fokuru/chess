@@ -39,11 +39,6 @@ public class Square extends JComponent {
         
         this.setBorder(BorderFactory.createEmptyBorder());
     }
-    
-    public Board getBoard()
-    {
-        return b;
-    }
 
 
     public boolean getColor() {

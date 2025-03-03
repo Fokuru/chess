@@ -112,8 +112,12 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     	
         for (int i = 0; i < 8; i++)
         {
+            board[6][i].put(new Piece(false, RESOURCES_BANTIPAWN_PNG));
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
             board[1][i].put(new Piece(true, RESOURCES_WANTIPAWN_PNG));
-            board[6][i].put(new Piece(true, RESOURCES_BANTIPAWN_PNG));
         }
 
     }
@@ -141,7 +145,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             for (int y = 0; y < 8; y++) {
                 Square sq = board[x][y];
                 if(sq == fromMoveSquare)
-                	 sq.setBorder(BorderFactory.createLineBorder(Color.blue));
+                	 sq.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
                 sq.paintComponent(g);
                 
             }
@@ -183,31 +187,61 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
         
+        if (currPiece != null)
+        {
+
         //using currPiece
         for(Square [] row: board){
             for(Square s: row){
                s.setBorder(null);
             }
         }
+
+        System.out.println("Ye");
+        System.out.println(currPiece);
+        
+        //FIX - Currently dupping the pieces moved???? At least you can move...
+
+
+        ArrayList <Square> movesAllowed = currPiece.getLegalMoves(board, fromMoveSquare);
+        for (int i = 0; i < movesAllowed.size(); i++)
+        {
+            if (movesAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
+            {
+                board[endSquare.getRow()][endSquare.getCol()].removePiece();
+                fromMoveSquare.removePiece();
+                movesAllowed.get(i).put(currPiece);
+                whiteTurn = !whiteTurn;
+                fromMoveSquare.setBorder(null);
+                    
+            }
+        }
         
        
         fromMoveSquare.setDisplay(true);
+        }
         currPiece = null;
         repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        currX = e.getX() - 24;
-        currY = e.getY() - 24;
-
-        ArrayList <Square> moves = currPiece.getLegalMoves(fromMoveSquare.getBoard(), fromMoveSquare);
-        for(Square s: moves){
-            s.setBorder(BorderFactory.createLineBorder(Color.red));
-        }
+        if (currPiece != null)
+        {
+            currX = e.getX() - 24;
+            currY = e.getY() - 24;
             
-         
-        repaint();
+            repaint();
+
+            ArrayList <Square> moves = currPiece.getLegalMoves(board, fromMoveSquare);
+            for(int i = 0; i < moves.size(); i++)
+            {
+                if (moves.get(i) != null)
+                {
+                moves.get(i).setBorder(BorderFactory.createLineBorder(Color.red, 2));
+                }
+            }
+        }
     }
 
     @Override

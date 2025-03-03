@@ -255,4 +255,9 @@ public class GameWindow {
             }
         }
     }
+
+    public Board getBoard()
+    {
+        return board;
+    }
 }

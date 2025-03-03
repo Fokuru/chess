@@ -50,7 +50,9 @@ public class Piece {
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
     public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
-     return null;
+     
+     
+      return null;
     }
     
 
@@ -60,33 +62,39 @@ public class Piece {
     //returns an arraylist of squares which are legal to move to
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
-    public ArrayList<Square> getLegalMoves(Board b, Square start){
+    public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
 
       ArrayList <Square> ans = new ArrayList <Square> ();
-      boolean isWhite = start.getColor();
+      boolean isWhite = start.getOccupyingPiece().getColor();
       int row = 0;
 
       if (isWhite)
       {
-        row = -1;
+        row = start.getRow() + 1;
       }
       else
       {
-        row = 1;
+        row = start.getRow() - 1;
       }
 
-      if ((b.getSquareArray()[start.getRow() + row][start.getCol() + 1].getOccupyingPiece() != null) && b.getSquareArray()[start.getRow() + row][start.getCol() - 1].getOccupyingPiece() != null)
-      {
-        return null;
-      }
-      if (b.getSquareArray()[start.getRow() + row][start.getCol() + 1].getOccupyingPiece() == null)
-      {
-        ans.add (b.getSquareArray()[row][1]);
-      }
-      if (b.getSquareArray()[start.getRow() + row][start.getCol() - 1].getOccupyingPiece() == null)
-      {
-        ans.add (b.getSquareArray()[row][-1]);
-      }
+
+      int col = start.getCol();
+
+        {
+        if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
+        {
+          ans.add (b[row][col + 1]);
+        }
+      
+
+        {
+        if ((col - 1 != -1) && (b[row][col - 1].isOccupied() == false))
+        {
+          ans.add (b[row][col -1]);
+        }
+
       return ans;
     }
 }
+    }
+  }
