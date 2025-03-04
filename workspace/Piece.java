@@ -1,3 +1,10 @@
+//
+// Editor: Raley Wilkin
+// Finished: 3/4/2025
+// Does: All functions for anti pawn piece, including moving and capturing
+//
+
+
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -49,10 +56,31 @@ public class Piece {
     // TO BE IMPLEMENTED!
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
-    public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
+
+    // Pre: Gets a square array array that is not null and a square which is not null
+    // Post: Gives an array of all available captures for the piece at start
+    public ArrayList<Square> getControlledSquares(Square[][] b, Square start) {
+      ArrayList <Square> ans = new ArrayList <Square> ();
+      boolean isWhite = start.getOccupyingPiece().getColor();
+      int row = 0;
+      if (isWhite)
+      {
+        row = start.getRow() + 1;
+      }
+      else
+      {
+        row = start.getRow() - 1;
+      }
      
-     
-      return null;
+      int col = start.getCol();
+
+      // Finds if there is a piece available for capture in capture spot and then adds to capture array
+      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != isWhite))
+      {
+        ans.add (b[row][col]);
+      }
+
+      return ans;
     }
     
 
@@ -62,6 +90,10 @@ public class Piece {
     //returns an arraylist of squares which are legal to move to
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
+
+
+    // Pre: Gets a square array array that is not null and a square which is not null
+    // Post: Gives an array of all available moves for the piece at start
     public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
 
       ArrayList <Square> ans = new ArrayList <Square> ();
@@ -80,21 +112,20 @@ public class Piece {
 
       int col = start.getCol();
 
-        {
+      // Finds if there is a square available for moving in move spot and then adds to move array
         if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
         {
           ans.add (b[row][col + 1]);
         }
       
 
-        {
+      // Finds if there is a square available for moving in move spot and then adds to move array
         if ((col - 1 != -1) && (b[row][col - 1].isOccupied() == false))
         {
           ans.add (b[row][col -1]);
         }
 
       return ans;
-    }
-}
+    
     }
   }

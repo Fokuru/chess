@@ -1,3 +1,8 @@
+//
+// Editor: Raley Wilkin
+// Finished: 3/4/2025
+// Does: All functions for squares, changed color
+//
 
 
 import java.awt.Color;
