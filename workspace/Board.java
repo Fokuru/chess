@@ -194,6 +194,13 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     @Override
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
+
+        System.out.println(e.getX() + " " + e.getY());
+
+        if (endSquare != null)
+        {
+        int colum = fromMoveSquare.getCol();
+        int rowe = fromMoveSquare.getRow();
         
         if (currPiece != null)
         {
@@ -205,8 +212,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             }
         }
 
-        System.out.println("Ye");
-        System.out.println(currPiece);
+        
         
 
         // Figures out if when the mouse was released that the piece being moved could move and then moves it if new position is legal
@@ -216,7 +222,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             if (movesAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
             {
                 board[endSquare.getRow()][endSquare.getCol()].removePiece();
-                fromMoveSquare.removePiece();
                 movesAllowed.get(i).put(currPiece);
                 whiteTurn = !whiteTurn;
                 fromMoveSquare.setBorder(null);
@@ -231,17 +236,29 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             if (capAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
             {
                 board[endSquare.getRow()][endSquare.getCol()].removePiece();
-                fromMoveSquare.removePiece();
                 capAllowed.get(i).put(currPiece);
                 whiteTurn = !whiteTurn;
                 fromMoveSquare.setBorder(null);
                     
             }
         }
-        
        
         fromMoveSquare.setDisplay(true);
         }
+        
+        if (((endSquare.getRow()>7) || endSquare.getRow()<0) || ((endSquare.getCol()>7) || endSquare.getCol()<0))
+        {
+            board[rowe][colum].put(currPiece);
+            currPiece = null;
+            fromMoveSquare.setDisplay(true);
+            repaint();
+        } 
+        else if (board[endSquare.getRow()][endSquare.getCol()].isOccupied())
+        {
+            fromMoveSquare.removePiece();
+        }
+
+    }
         currPiece = null;
         repaint();
     }

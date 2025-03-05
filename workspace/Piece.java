@@ -74,6 +74,12 @@ public class Piece {
      
       int col = start.getCol();
 
+
+      if (row>7 || row<0 || col>7 || col<0)
+      {
+        return ans;
+      }
+
       // Finds if there is a piece available for capture in capture spot and then adds to capture array
       if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != isWhite))
       {
@@ -107,6 +113,11 @@ public class Piece {
       else
       {
         row = start.getRow() - 1;
+      }
+
+      if ((start.getRow() + 1)>7 || (start.getRow() - 1) < 0)
+      {
+        return ans;
       }
 
 
