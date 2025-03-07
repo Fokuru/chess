@@ -59,6 +59,8 @@ public class Piece {
 
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available captures for the piece at start
+    // Logic: Can capture pieces of opposite color to self if they are placed one square
+    // in front of piece towards the opposite side of board from where piece started. 
     public ArrayList<Square> getControlledSquares(Square[][] b, Square start) {
       ArrayList <Square> ans = new ArrayList <Square> ();
       boolean isWhite = start.getOccupyingPiece().getColor();
@@ -100,6 +102,9 @@ public class Piece {
 
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available moves for the piece at start
+    // Logic: Can move diagonal one square towards the oposite side of the board from 
+    // where piece started, can not move if another piece of any color or the edge of 
+    // the board is in the way 
     public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
 
       ArrayList <Square> ans = new ArrayList <Square> ();
