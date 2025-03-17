@@ -199,66 +199,44 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
         if (endSquare != null)
         {
-        int colum = fromMoveSquare.getCol();
-        int rowe = fromMoveSquare.getRow();
-        
-        if (currPiece != null)
-        {
+                
+                if (currPiece != null)
+                {
 
-        //using currPiece
-        for(Square [] row: board){
-            for(Square s: row){
-               s.setBorder(null);
-            }
+                //using currPiece
+                for(Square [] row: board){
+                    for(Square s: row){
+                    s.setBorder(null);
+                    }
+                }
+
+                
+                
+
+                // Figures out if when the mouse was released that the piece being moved could move and then moves it if new position is legal
+                ArrayList <Square> movesAllowed = currPiece.getLegalMoves(board, fromMoveSquare);
+                for (int i = 0; i < movesAllowed.size(); i++)
+                {
+                    if (movesAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
+                    {
+                        fromMoveSquare.removePiece();
+                        endSquare.put(currPiece);
+                        whiteTurn = !whiteTurn;
+                        fromMoveSquare.setBorder(null);
+                            
+                    }
+                }
+
+
+
+            
+                
         }
-
         
-        
+      
 
-        // Figures out if when the mouse was released that the piece being moved could move and then moves it if new position is legal
-        ArrayList <Square> movesAllowed = currPiece.getLegalMoves(board, fromMoveSquare);
-        for (int i = 0; i < movesAllowed.size(); i++)
-        {
-            if (movesAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
-            {
-                board[endSquare.getRow()][endSquare.getCol()].removePiece();
-                movesAllowed.get(i).put(currPiece);
-                whiteTurn = !whiteTurn;
-                fromMoveSquare.setBorder(null);
-                    
-            }
         }
-
-        // Figures out if when the mouse was released that the piece being moved could capture and then captures it if new position is legal
-        ArrayList <Square> capAllowed = currPiece.getControlledSquares(board, fromMoveSquare);
-        for (int i = 0; i < capAllowed.size(); i++)
-        {
-            if (capAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
-            {
-                board[endSquare.getRow()][endSquare.getCol()].removePiece();
-                capAllowed.get(i).put(currPiece);
-                whiteTurn = !whiteTurn;
-                fromMoveSquare.setBorder(null);
-                    
-            }
-        }
-       
         fromMoveSquare.setDisplay(true);
-        }
-        
-        if (((endSquare.getRow()>7) || endSquare.getRow()<0) || ((endSquare.getCol()>7) || endSquare.getCol()<0))
-        {
-            board[rowe][colum].put(currPiece);
-            currPiece = null;
-            fromMoveSquare.setDisplay(true);
-            repaint();
-        } 
-        else if (board[endSquare.getRow()][endSquare.getCol()].isOccupied())
-        {
-            fromMoveSquare.removePiece();
-        }
-
-    }
         currPiece = null;
         repaint();
     }

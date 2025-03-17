@@ -63,9 +63,9 @@ public class Piece {
     // in front of piece towards the opposite side of board from where piece started. 
     public ArrayList<Square> getControlledSquares(Square[][] b, Square start) {
       ArrayList <Square> ans = new ArrayList <Square> ();
-      boolean isWhite = start.getOccupyingPiece().getColor();
       int row = 0;
-      if (isWhite)
+
+      if (color)
       {
         row = start.getRow() + 1;
       }
@@ -81,12 +81,8 @@ public class Piece {
       {
         return ans;
       }
-
-      // Finds if there is a piece available for capture in capture spot and then adds to capture array
-      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != isWhite))
-      {
-        ans.add (b[row][col]);
-      }
+    
+      ans.add (b[row][col]);
 
       return ans;
     }
@@ -108,10 +104,9 @@ public class Piece {
     public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
 
       ArrayList <Square> ans = new ArrayList <Square> ();
-      boolean isWhite = start.getOccupyingPiece().getColor();
       int row = 0;
 
-      if (isWhite)
+      if (color)
       {
         row = start.getRow() + 1;
       }
@@ -128,6 +123,11 @@ public class Piece {
 
       int col = start.getCol();
 
+      if (row > 7 || row < 0 || col + 1>7 || col - 1<0)
+      {
+        return ans;
+      }
+
       // Finds if there is a square available for moving in move spot and then adds to move array
         if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
         {
@@ -140,6 +140,14 @@ public class Piece {
         {
           ans.add (b[row][col -1]);
         }
+
+
+        // Finds if there is a piece available for capture in capture spot and then adds to capture array
+      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != color))
+      {
+    
+        ans.add (b[row][col]);
+      }
 
       return ans;
     
