@@ -123,10 +123,6 @@ public class Piece {
 
       int col = start.getCol();
 
-      if (row > 7 || row < 0 || col + 1>7 || col - 1<0)
-      {
-        return ans;
-      }
 
       // Finds if there is a square available for moving in move spot and then adds to move array
         if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
