@@ -120,12 +120,12 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         // Places anti pawns where regular pawns would be
         for (int i = 0; i < 8; i++)
         {
-            board[6][i].put(new Piece(false, RESOURCES_BANTIPAWN_PNG));
+            board[6][i].put(new AntiPawn(false, RESOURCES_BANTIPAWN_PNG));
         }
 
         for (int i = 0; i < 8; i++)
         {
-            board[1][i].put(new Piece(true, RESOURCES_WANTIPAWN_PNG));
+            board[1][i].put(new AntiPawn(true, RESOURCES_WANTIPAWN_PNG));
         }
 
     }

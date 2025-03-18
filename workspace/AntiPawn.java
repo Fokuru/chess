@@ -1,7 +1,7 @@
 //
 // Editor: Raley Wilkin
-// Finished: 3/17/2025
-// Does: All functions for piece
+// Finished: 3/18/2025
+// Does: All functions for anti pawn piece, including moving and capturing
 //
 
 
@@ -16,46 +16,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.util.ArrayList;
 
-//you will need to implement two functions in this file.
-public class Piece {
-    private final boolean color;
-    private BufferedImage img;
-    
-    public Piece(boolean isWhite, String img_file) {
-        this.color = isWhite;
-        
-        try {
-            if (this.img == null) {
-              this.img = ImageIO.read(getClass().getResource(img_file));
-            }
-          } catch (IOException e) {
-            System.out.println("File not found: " + e.getMessage());
-          }
-    }
-    
-    
+import javax.imageio.ImageIO;
 
-    
-    public boolean getColor() {
-        return color;
+public class AntiPawn extends Piece
+{
+    // Construct an Anti Pawn
+    public AntiPawn(boolean isWhite, String img_file) {
+        super(isWhite, img_file);
     }
-    
-    public Image getImage() {
-        return img;
-    }
-    
-    public void draw(Graphics g, Square currentSquare) {
-        int x = currentSquare.getX();
-        int y = currentSquare.getY();
-        
-        g.drawImage(this.img, x, y, null);
-    }
-    
-    
-    // TO BE IMPLEMENTED!
-    //return a list of every square that is "controlled" by this piece. A square is controlled
-    //if the piece capture into it legally.
 
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available controlled squares for the piece at start
@@ -63,7 +34,7 @@ public class Piece {
       ArrayList <Square> ans = new ArrayList <Square> ();
       int row = 0;
 
-      if (color)
+      if (super.getColor())
       {
         row = start.getRow() + 1;
       }
@@ -84,14 +55,6 @@ public class Piece {
 
       return ans;
     }
-    
-
-    //TO BE IMPLEMENTED!
-    //implement the move function here
-    //it's up to you how the piece moves, but at the very least the rules should be logical and it should never move off the board!
-    //returns an arraylist of squares which are legal to move to
-    //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
-    //going to score any points.
 
 
     // Pre: Gets a square array array that is not null and a square which is not null
@@ -106,7 +69,7 @@ public class Piece {
       ArrayList <Square> ans = new ArrayList <Square> ();
       int row = 0;
 
-      if (color)
+      if (super.getColor())
       {
         row = start.getRow() + 1;
       }
@@ -139,7 +102,7 @@ public class Piece {
 
 
         // Finds if there is a piece available for capture in capture spot and then adds to ans array
-      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != color))
+      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != super.getColor()))
       {
     
         ans.add (b[row][col]);
@@ -148,4 +111,4 @@ public class Piece {
       return ans;
     
     }
-  }
+}
