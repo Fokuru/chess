@@ -28,6 +28,13 @@ public class AntiPawn extends Piece
         super(isWhite, img_file);
     }
 
+    // Pre: No input required
+    // Post: Gives a string which contains information about the piece
+    public String toString()
+    {
+        return "The color of this piece is " + super.getColor() + " and it is an Anti Pawn";
+    }
+
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available controlled squares for the piece at start
     public ArrayList<Square> getControlledSquares(Square[][] b, Square start) {
@@ -59,7 +66,7 @@ public class AntiPawn extends Piece
 
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available moves for the piece at start
-    // Logic: Can move diagonal one square towards the oposite side of the board from 
+    // Logic: Can move diagonal one square towards the opposite side of the board from 
     // where piece started and can capture pieces of opposite color to self if they 
     // are placed one square in front of piece towards the opposite side of board from
     // where piece started. Can not move if another piece of any color or the edge of 
