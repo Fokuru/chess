@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 
 //you will need to implement two functions in this file.
 public class Piece {
-    private final boolean color;
+    protected final boolean color;
     private BufferedImage img;
     
     public Piece(boolean isWhite, String img_file) {
