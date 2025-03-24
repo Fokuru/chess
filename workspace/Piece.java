@@ -34,7 +34,17 @@ public class Piece {
           }
     }
     
-    
+    public String toString()
+    {
+      if (color) 
+      {
+        return "white";
+      } 
+      else 
+      {
+        return "black";
+      }
+    }
 
     
     public boolean getColor() {
@@ -101,8 +111,8 @@ public class Piece {
     // are placed one square in front of piece towards the opposite side of board from
     // where piece started. Can not move if another piece of any color or the edge of 
     // the board is in the way 
-    public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
-
+    public ArrayList<Square> getLegalMoves(Board b, Square start){
+      Square[][] a = b.getArrayArray();
       ArrayList <Square> ans = new ArrayList <Square> ();
       int row = 0;
 
@@ -125,24 +135,24 @@ public class Piece {
 
 
       // Finds if there is a square available for moving in move spot and then adds to ans array
-        if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
+        if ((col + 1 < 8 ) && (a[row][col + 1].isOccupied() == false))
         {
-          ans.add (b[row][col + 1]);
+          ans.add (a[row][col + 1]);
         }
       
 
       // Finds if there is a square available for moving in move spot and then adds to ans array
-        if ((col - 1 != -1) && (b[row][col - 1].isOccupied() == false))
+        if ((col - 1 != -1) && (a[row][col - 1].isOccupied() == false))
         {
-          ans.add (b[row][col -1]);
+          ans.add (a[row][col -1]);
         }
 
 
         // Finds if there is a piece available for capture in capture spot and then adds to ans array
-      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != color))
+      if ((a[row][col].isOccupied() != false && a[row][col].getOccupyingPiece().getColor() != color))
       {
     
-        ans.add (b[row][col]);
+        ans.add (a[row][col]);
       }
 
       return ans;

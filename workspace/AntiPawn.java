@@ -30,13 +30,15 @@ public class AntiPawn extends Piece
 
     // Pre: No input required
     // Post: Gives a string which contains information about the piece
+    @Override
     public String toString()
     {
-        return "The color of this piece is " + super.getColor() + " and it is an Anti Pawn";
+        return "The color of this piece is " + super.toString() + " and it is an Anti Pawn";
     }
 
     // Pre: Gets a square array array that is not null and a square which is not null
     // Post: Gives an array of all available controlled squares for the piece at start
+    @Override
     public ArrayList<Square> getControlledSquares(Square[][] b, Square start) {
       ArrayList <Square> ans = new ArrayList <Square> ();
       int row = 0;
@@ -71,8 +73,9 @@ public class AntiPawn extends Piece
     // are placed one square in front of piece towards the opposite side of board from
     // where piece started. Can not move if another piece of any color or the edge of 
     // the board is in the way 
-    public ArrayList<Square> getLegalMoves(Square[][] b, Square start){
-
+    @Override
+    public ArrayList<Square> getLegalMoves(Board b, Square start){
+      Square[][] a = b.getArrayArray();
       ArrayList <Square> ans = new ArrayList <Square> ();
       int row = 0;
 
@@ -95,24 +98,24 @@ public class AntiPawn extends Piece
 
 
       // Finds if there is a square available for moving in move spot and then adds to ans array
-        if ((col + 1 < 8 ) && (b[row][col + 1].isOccupied() == false))
+        if ((col + 1 < 8 ) && (a[row][col + 1].isOccupied() == false))
         {
-          ans.add (b[row][col + 1]);
+          ans.add (a[row][col + 1]);
         }
       
 
       // Finds if there is a square available for moving in move spot and then adds to ans array
-        if ((col - 1 != -1) && (b[row][col - 1].isOccupied() == false))
+        if ((col - 1 != -1) && (a[row][col - 1].isOccupied() == false))
         {
-          ans.add (b[row][col -1]);
+          ans.add (a[row][col -1]);
         }
 
 
         // Finds if there is a piece available for capture in capture spot and then adds to ans array
-      if ((b[row][col].isOccupied() != false && b[row][col].getOccupyingPiece().getColor() != super.getColor()))
+      if ((a[row][col].isOccupied() != false && a[row][col].getOccupyingPiece().getColor() != super.getColor()))
       {
     
-        ans.add (b[row][col]);
+        ans.add (a[row][col]);
       }
 
       return ans;

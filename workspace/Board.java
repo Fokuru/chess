@@ -51,11 +51,17 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     //if the player is currently dragging a piece this variable contains it.
     private Piece currPiece;
     private Square fromMoveSquare;
+    private Square wKingSquare;
+    private Square bKingSquare;
     
     //used to keep track of the x/y coordinates of the mouse.
     private int currX;
     private int currY;
     
+    public Square[][] getArrayArray()
+    {
+        return board;
+    }
 
     
     public Board(GameWindow g) {
@@ -127,6 +133,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         {
             board[1][i].put(new AntiPawn(true, RESOURCES_WANTIPAWN_PNG));
         }
+
+        board[0][3].put(new King(true, RESOURCES_WKING_PNG));
+        board[7][3].put(new King(false, RESOURCES_BKING_PNG));
 
     }
 
@@ -212,19 +221,30 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
                 
                 
-
                 // Figures out if when the mouse was released that the piece being moved could move and then moves it if new position is legal
-                ArrayList <Square> movesAllowed = currPiece.getLegalMoves(board, fromMoveSquare);
+                ArrayList <Square> movesAllowed = currPiece.getLegalMoves(this, fromMoveSquare);
+
                 for (int i = 0; i < movesAllowed.size(); i++)
                 {
                     if (movesAllowed.get(i) == endSquare && currPiece.getColor() == whiteTurn)
                     {
+                        Piece from = endSquare.getOccupyingPiece();
                         fromMoveSquare.removePiece();
                         endSquare.put(currPiece);
-                        whiteTurn = !whiteTurn;
-                        fromMoveSquare.setBorder(null);
-                            
+                        System.out.println(isInCheck(whiteTurn));
+
+                        if (isInCheck(whiteTurn) == true)
+                        {
+                            fromMoveSquare.put(currPiece);
+                            endSquare.put(from);
+                        }
+                        else
+                        {
+                            whiteTurn = !whiteTurn;
+                            fromMoveSquare.setBorder(null);
+                        }   
                     }
+                 
                 }
 
 
@@ -250,7 +270,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 
             // Finds all moveable squares using getLegalMoves and puts a red border on them
-            ArrayList <Square> moves = currPiece.getLegalMoves(board, fromMoveSquare);
+            ArrayList <Square> moves = currPiece.getLegalMoves(this, fromMoveSquare);
             for(int i = 0; i < moves.size(); i++)
             {
                 if (moves.get(i) != null)
@@ -287,6 +307,48 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    public boolean isInCheck(boolean color)
+    {
+        ArrayList <Square> contPiece = new ArrayList<Square>();
+        
+        
+        for (int i = 0; i < 8; i++)
+        {
+            for (int k = 0; k < 8; k++)
+            {
+                if (board[i][k].getColor() != color && board[i][k].getOccupyingPiece() != null)
+                {
+                    ArrayList <Square> place = board[i][k].getOccupyingPiece().getLegalMoves(this, board[i][k]);
+                    for (int l = 0; l < place.size(); l++)
+                    {
+                        contPiece.add(place.get(l));
+                    }
+                }
+            }
+        }
+
+        boolean check = false;
+        for (int i = 0; i < 8; i++)
+        {
+            for (int k = 0; k < 8; k++)
+            {
+                for (int p = 0; p < contPiece.size(); p++)
+                {
+                    if (board[i][k].getColor() == color && board[i][k].toString().contains("king"))
+                    {
+                        if (board[i][k].getCol() == contPiece.get(p).getCol() && board[i][k].getRow() == contPiece.get(p).getRow())
+                        {
+                            check = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return check;
+        
     }
 
 }
