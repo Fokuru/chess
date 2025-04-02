@@ -205,7 +205,12 @@ public class GameWindow {
                 		
                 		// this is the only section you really need to modify (although you're certainly welcome to mess
                 		//with the rest of the file, but do so at your own peril)
-                        " <<<<<<<<<<<<<<<Your instructions go here>>>>>>>>>",
+                        "To play this version of chess you move the pieces in an attempt to capture the opposite king."
+                        + "\n" + "The queen and king are regular, but the rest of the pieces aren't." 
+                        + "\n" + "The 'anti-pawns' wich replace the pawns move diagonal and capture forward."
+                        + "\n" + "The 'jokers' which replace the rooks randomly decides to move either like a knight, rook or bishop."
+                        + "\n" + "The 'slimes' which replace the knights move two squares in any direction."
+                        + "\n" + "The 'assassin' which replace the bishops move forward, backward and diagonally forward.",
                         
                         
                         

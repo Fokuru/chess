@@ -24,7 +24,7 @@ public class StartMenu implements Runnable {
         // Set window properties
         startWindow.setLocation(300,100);
         startWindow.setResizable(false);
-        startWindow.setSize(260, 240);
+        startWindow.setSize(300, 240);
         
         Box components = Box.createVerticalBox();
         startWindow.add(components);

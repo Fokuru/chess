@@ -40,6 +40,15 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     // Added anti pawn pictures
     private static final String RESOURCES_WANTIPAWN_PNG = "wantipawn.png";
 	private static final String RESOURCES_BANTIPAWN_PNG = "bantipawn.png";
+    // Added slime pictures
+    private static final String RESOURCES_WSLIME_PNG = "whiteSlime.png";
+	private static final String RESOURCES_BSLIME_PNG = "blackSlime.png";
+    // Added slime pictures
+    private static final String RESOURCES_WASSASSIN_PNG = "WhiteAssassin.png";
+	private static final String RESOURCES_BASSASSIN_PNG = "BlackAssassin.png";
+    // Added Joker Pictures
+    private static final String RESOURCES_WJOKER_PNG = "WJoker.png";
+	private static final String RESOURCES_BJOKER_PNG = "BJoker.png";
 	
 	// Logical and graphical representations of board
 	private final Square[][] board;
@@ -57,6 +66,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     //used to keep track of the x/y coordinates of the mouse.
     private int currX;
     private int currY;
+
+    // Move Type for Joker:
+    int moveType = (int) (Math.random() * (3 - 0 + 1) + 0);
     
     public Square[][] getArrayArray()
     {
@@ -136,6 +148,20 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
         board[0][3].put(new King(true, RESOURCES_WKING_PNG));
         board[7][3].put(new King(false, RESOURCES_BKING_PNG));
+        board[0][4].put(new Queen(true, RESOURCES_WQUEEN_PNG));
+        board[7][4].put(new Queen(false, RESOURCES_BQUEEN_PNG));
+        board[0][1].put(new Slime(true, RESOURCES_WSLIME_PNG));
+        board[7][6].put(new Slime(false, RESOURCES_BSLIME_PNG));
+        board[0][2].put(new Assassin(true, RESOURCES_WASSASSIN_PNG));
+        board[7][5].put(new Assassin(false, RESOURCES_BASSASSIN_PNG));
+        board[0][6].put(new Slime(true, RESOURCES_WSLIME_PNG));
+        board[7][1].put(new Slime(false, RESOURCES_BSLIME_PNG));
+        board[0][5].put(new Assassin(true, RESOURCES_WASSASSIN_PNG));
+        board[7][2].put(new Assassin(false, RESOURCES_BASSASSIN_PNG));
+        board[0][0].put(new Joker(true, RESOURCES_WJOKER_PNG));
+        board[7][0].put(new Joker(false, RESOURCES_BJOKER_PNG));
+        board[0][7].put(new Joker(true, RESOURCES_WJOKER_PNG));
+        board[7][7].put(new Joker(false, RESOURCES_BJOKER_PNG));
 
     }
 
@@ -204,7 +230,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
 
-        System.out.println(e.getX() + " " + e.getY());
+        // System.out.println(e.getX() + " " + e.getY());
+        System.out.println(isInCheck(whiteTurn));
 
         if (endSquare != null)
         {
@@ -231,17 +258,28 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
                         Piece from = endSquare.getOccupyingPiece();
                         fromMoveSquare.removePiece();
                         endSquare.put(currPiece);
-                        System.out.println(isInCheck(whiteTurn));
+                        //System.out.println(isInCheck(whiteTurn));
 
                         if (isInCheck(whiteTurn) == true)
                         {
                             fromMoveSquare.put(currPiece);
                             endSquare.put(from);
+                            for (int n = 0; n < 8; n++)
+                            {
+                                for (int k = 0; k < 8; k++)
+                                {
+                                    if (board[n][k].getOccupyingPiece() != null && board[n][k].getOccupyingPiece().getColor() == whiteTurn && board[n][k].getOccupyingPiece() instanceof King)
+                                    {
+                                        board[n][k].setBorder(BorderFactory.createLineBorder(Color.red, 2));
+                                    }
+                                }
+                            }
                         }
                         else
                         {
                             whiteTurn = !whiteTurn;
                             fromMoveSquare.setBorder(null);
+                            moveType = (int) (Math.random() * (3 - 0 + 1) + 0);
                         }   
                     }
                  
@@ -318,9 +356,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         {
             for (int k = 0; k < 8; k++)
             {
-                if (board[i][k].getColor() != color && board[i][k].getOccupyingPiece() != null)
+                if (board[i][k].getOccupyingPiece() != null && board[i][k].getOccupyingPiece().getColor() != color)
                 {
-                    ArrayList <Square> place = board[i][k].getOccupyingPiece().getLegalMoves(this, board[i][k]);
+                    ArrayList <Square> place = board[i][k].getOccupyingPiece().getControlledSquares(board, board[i][k]);
                     for (int l = 0; l < place.size(); l++)
                     {
                         contPiece.add(place.get(l));
@@ -330,22 +368,15 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         }
 
         boolean check = false;
-        for (int i = 0; i < 8; i++)
+        for (int p = 0; p < contPiece.size(); p++)
         {
-            for (int k = 0; k < 8; k++)
+            if (contPiece.get(p).getOccupyingPiece() != null &&  contPiece.get(p).getOccupyingPiece().getColor() == color && contPiece.get(p).getOccupyingPiece() instanceof King)
             {
-                for (int p = 0; p < contPiece.size(); p++)
-                {
-                    if (board[i][k].getColor() == color && board[i][k].toString().contains("king"))
-                    {
-                        if (board[i][k].getCol() == contPiece.get(p).getCol() && board[i][k].getRow() == contPiece.get(p).getRow())
-                        {
-                            check = true;
-                        }
-                    }
-                }
+                check = true;  
             }
         }
+        
+        
 
         return check;
         
